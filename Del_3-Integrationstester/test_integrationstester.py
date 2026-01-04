@@ -17,33 +17,18 @@ import requests
 BASE_URL = "https://fakestoreapi.com"
 
 def test_get_products_returns_200():
-    headers = {
-        "User-Agent": "Mozilla/5.0",
-        "Accept": "application/json",
-    }
-    response = requests.get(f"{BASE_URL}/products", headers=headers)
-    #response = requests.get(f"{BASE_URL}/products")
+    response = requests.get(f"{BASE_URL}/products")
     assert response.status_code == 200
 
 
 def test_products_count():
-    headers = {
-        "User-Agent": "Mozilla/5.0",
-        "Accept": "application/json",
-    }
-    response = requests.get(f"{BASE_URL}/products", headers=headers)
-    #response = requests.get(f"{BASE_URL}/products")
+    response = requests.get(f"{BASE_URL}/products")
     products = response.json()
     assert len(products) == 20
 
 
 def test_product_contains_required_fields():
-    headers = {
-        "User-Agent": "Mozilla/5.0",
-        "Accept": "application/json",
-    }
-    response = requests.get(f"{BASE_URL}/products", headers=headers)
-    #response = requests.get(f"{BASE_URL}/products")
+    response = requests.get(f"{BASE_URL}/products")
     product = response.json()[0]
 
     assert "title" in product
