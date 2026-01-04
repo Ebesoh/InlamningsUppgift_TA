@@ -83,7 +83,7 @@ jobs:
 
     - name: Run Inloggning tester
       run: |
-        pytest test_inloggningsfunktion.py
+        pytest Del_3-Integrationstester/test_inloggningsfunktion.py
 
   integration-tests:
     name: Integration Tests
@@ -103,4 +103,4 @@ jobs:
 
     - name: Run integration tests
       run: |
-        pytest test_integrationstester.py
+        pytest Del_3-Integrationstester/test_integrationstester.py
