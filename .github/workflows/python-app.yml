@@ -83,7 +83,7 @@ jobs:
 
     - name: Run Inloggning tester
       run: |
-        pytest InlamningsUppgift_TA/tree/main/Del_2-Inloggningsfunktion
+        pytest https://github.com/Ebesoh/InlamningsUppgift_TA/tree/main/Del_2-Inloggningsfunktion
 
   integration-tests:
     name: Integration Tests
