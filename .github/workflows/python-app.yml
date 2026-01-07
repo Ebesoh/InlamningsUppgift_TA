@@ -44,7 +44,7 @@ jobs:
   login-test:
     name: lnloggning tester
     runs-on: ubuntu-latest
-    needs: lint   # stage dependency
+    needs: setup   # stage dependency
 
     steps:
     - uses: actions/checkout@v4
