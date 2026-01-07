@@ -23,13 +23,13 @@ def test_get_products_returns_200():
 
 def test_products_count():
     response = requests.get(f"{BASE_URL}/products")  # Hämtar alla produkter från API:et
-    products = response.json() # Omvandlar JSON-svaret till en Python-lista
-    assert len(products) == 20  # Kontrollerar att API:et returnerar exakt 20 produkter
+    products = response.json()                       # Omvandlar JSON-svaret till en Python-lista
+    assert len(products) == 20                        # Kontrollerar att API:et returnerar exakt 20 produkter
 
 
 def test_product_contains_required_fields():
     response = requests.get(f"{BASE_URL}/products")  # Hämtar alla produkter från API:et
-    product = response.json()[0]     # Tar ut den första produkten i listan
+    product = response.json()[0]                     # Tar ut den första produkten i listan
 
     # Kontrollerar att produkten innehåller nödvändiga fält
     # Dessa fält krävs för att applikationen ska fungera korrekt
