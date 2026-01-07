@@ -67,7 +67,7 @@ jobs:
 
 
   integration-tests:
-    name: Integration Tests
+    name: Integrationstester
     runs-on: ubuntu-latest
     needs: login-test  # important
 
