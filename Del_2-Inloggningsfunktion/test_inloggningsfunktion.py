@@ -191,4 +191,4 @@ def test_password_without_username(driver):
     driver.find_element(By.ID, "login-button").click()
 
     error = driver.find_element(By.CSS_SELECTOR, "[data-test='error']")
-    assert error.text == "Epic sadface:Username is required"
+    assert error.text == "Epic sadface: Username is required"
