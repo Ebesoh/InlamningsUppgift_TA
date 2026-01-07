@@ -18,6 +18,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import pytest
 
+
 # URL till applikationen som testas
 URL = "https://www.saucedemo.com/"
 
