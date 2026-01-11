@@ -146,7 +146,7 @@ def test_wrong_password_username5(driver):
 
 def test_locked_user_givenpassword(driver):
     """
-    Kontrollerar att låsta användarkonton inte kan logga in,
+     Kontrollerar att låsta användarkonton inte kan logga in med rätt lösenord,
     vilket är ett viktigt säkerhetskrav.
     """
     login(driver, "locked_out_user", "secret_sauce")
@@ -155,7 +155,7 @@ def test_locked_user_givenpassword(driver):
 
 def test_locked_user_wrongpassword(driver):
     """
-    Kontrollerar att låsta användarkonton inte kan logga in,
+    Kontrollerar att låsta användarkonton inte kan logga in med fel lösenord,
     vilket är ett viktigt säkerhetskrav.
     """
     login(driver, "locked_out_user", "secret_sauc")
