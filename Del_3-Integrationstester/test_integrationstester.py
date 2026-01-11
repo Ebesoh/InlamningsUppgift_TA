@@ -45,7 +45,9 @@ def test_specific_product_contains_required_fields(): #Testfall: Kontrollera att
     assert "id" in product
     assert "title" in product
     assert "price" in product
+    assert "description" in product
     assert "category" in product
+    assert "image" in product
 
 
 def test_product_field_types(): # Testfall kontrollera att fälten i en product har rätt datatyper
@@ -55,7 +57,9 @@ def test_product_field_types(): # Testfall kontrollera att fälten i en product 
     assert isinstance(product["id"], int)
     assert isinstance(product["title"], str)
     assert isinstance(product["price"], (int, float))
+    assert isinstance(product["description"], str)
     assert isinstance(product["category"], str)
+    assert isinstance(product["image"], str)
 
 
 def test_specific_product_id_is_correct(): # Testfall: Kontrollera att rätt produkt returneras för ID 1.
@@ -78,3 +82,9 @@ def test_all_products_have_unique_ids(): #Testfall: Kontrollera att alla produkt
 
     ids = [product["id"] for product in products]  # Samlar alla produkt-ID:n i en lista
     assert len(ids) == len(set(ids)) # Jämför antal ID:n med antal unika ID:n
+
+def test_update_a_product_price(): # Testfall kontrolleras att specifik produkt priset uppdateras
+    product = {'title': 'Updated Product', 'price': 39.99}  # Nya priset
+    response = requests.put('https://fakestoreapi.com/products/1', json=product) # skriva nya priset i API.
+
+    assert product["price"] == 39.99 # Kontrollerar att produkt priset har uppdaterat
