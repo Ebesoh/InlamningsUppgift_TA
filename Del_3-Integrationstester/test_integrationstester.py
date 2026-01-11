@@ -21,31 +21,55 @@ def test_get_products_returns_200():
     assert response.status_code == 200 # Kontrollerar att API:et är tillgängligt och svarar korrekt. Statuskod 200 betyder "OK".
 
 
+def test_products_response_is_json():
+    response = requests.get(f"{BASE_URL}/products")
+    assert response.headers["Content-Type"].startswith("application/json")
+
+
 def test_products_count():
     response = requests.get(f"{BASE_URL}/products")  # Hämtar alla produkter från API:et
     products = response.json()                       # Omvandlar JSON-svaret till en Python-lista
     assert len(products) == 20                        # Kontrollerar att API:et returnerar exakt 20 produkter
 
 
-def test_product_contains_required_fields():
+def test_specific_product_contains_required_fields():
     response = requests.get(f"{BASE_URL}/products")  # Hämtar alla produkter från API:et
     product = response.json()[0]                     # Tar ut den första produkten i listan
 
     # Kontrollerar att produkten innehåller nödvändiga fält
     # Dessa fält krävs för att applikationen ska fungera korrekt
+    assert "id" in product
     assert "title" in product
     assert "price" in product
     assert "category" in product
 
 
-def test_specific_product_id():
+def test_product_field_types(): # Testfall kontrollera att fälten i en product har rätt datatyper
+    response = requests.get(f"{BASE_URL}/products")
+    product = response.json()[0]
+
+    assert isinstance(product["id"], int)
+    assert isinstance(product["title"], str)
+    assert isinstance(product["price"], (int, float))
+    assert isinstance(product["category"], str)
+
+
+def test_specific_product_id_is_correct(): # Testfall: Kontrollera att rätt produkt returneras för ID 1.
     response = requests.get(f"{BASE_URL}/products/1") # Hämtar en specifik produkt baserat på ID
     product = response.json()
 
     assert product["id"] == 1 # Kontrollerar att rätt produkt returneras
 
-    # Kontrollerar att rätt produkt returneras
-    # Detta säkerställer konsekvent struktur i API:et
-    assert "title" in product
-    assert "price" in product
-    assert "category" in product
+
+def test_product_price_is_positive(): # Testfall: Kontrollera att produktens pris är större än 0.
+    response = requests.get(f"{BASE_URL}/products/1") # Hämtar en specifik produkt baserat på ID
+    product = response.json()
+    assert product["price"] > 0 # Kontrollerar att produktens pris är större än 0
+
+
+def test_all_products_have_unique_ids(): #Testfall: Kontrollera att alla produkter har unika ID:n.
+    response = requests.get(f"{BASE_URL}/products") #Skickar en GET-förfrågan
+    products = response.json()  # Omvandlar API-svaret från JSON till en Python-lista
+
+    ids = [product["id"] for product in products]  # Samlar alla produkt-ID:n i en lista
+    assert len(ids) == len(set(ids)) # Jämför antal ID:n med antal unika ID:n
