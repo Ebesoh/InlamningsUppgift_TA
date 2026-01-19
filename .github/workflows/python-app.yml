@@ -30,6 +30,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest requests
+        pip install pytest selenium webdriver-manager
+        pip install playwright pytest-playwright
+        python -m playwright install
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Install flake8
@@ -59,11 +62,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest pytest-cov requests
         pip install selenium pytest pytest-cov requests
+        pip install pytest selenium webdriver-manager
+        pip install playwright pytest-playwright
+        python -m playwright install
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Run Inloggning tester
       run: |
-        pytest Del_2-Inloggningsfunktion/test_inloggningsfunktion.py
+        pytest Del_2-Inloggningsfunktion/test_inloggningsfunktion_Selenium.py \
+               Del_2-Inloggningsfunktion/test_inloggningsfunktion_playwright.py
 
 
   Integrationstester:
@@ -84,4 +91,4 @@ jobs:
 
     - name: Run integration tests
       run: |
-        pytest Del_3-Integrationstester/test_integrationstester.py
+        pytest Del_3-Integrationstester/test_integrationstester_Selenium.py
