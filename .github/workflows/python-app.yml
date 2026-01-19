@@ -91,4 +91,4 @@ jobs:
 
     - name: Run integration tests
       run: |
-        pytest Del_3-Integrationstester/test_integrationstester_Selenium.py
+        pytest Del_3-Integrationstester/test_integrationstester.py
