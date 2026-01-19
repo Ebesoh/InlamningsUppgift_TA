@@ -63,7 +63,8 @@ jobs:
 
     - name: Run Inloggning tester
       run: |
-        pytest Del_2-Inloggningsfunktion/test_inloggningsfunktion.py
+        pytest Del_2-Inloggningsfunktion/test_inloggningsfunktion_Selenium.py \
+               Del_2-Inloggningsfunktion/test_inloggningsfunktion_playwright.py
 
 
   Integrationstester:
@@ -84,4 +85,4 @@ jobs:
 
     - name: Run integration tests
       run: |
-        pytest Del_3-Integrationstester/test_integrationstester.py
+        pytest Del_3-Integrationstester/test_integrationstester_Selenium.py
