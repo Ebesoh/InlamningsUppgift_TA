@@ -9,6 +9,7 @@ pipeline {
         PYTHONUNBUFFERED = '1'
         PLAYWRIGHT_BROWSERS_PATH = '0'
         PLAYWRIGHT_HEADLESS = '1'
+        REPORT_DIR = 'reports'
     }
 
     stages {
@@ -36,6 +37,7 @@ pipeline {
                     selenium \
                     pytest \
                     pytest-cov \
+                    pytest-html \
                     playwright \
                     pytest-playwright \
                     requests
@@ -45,40 +47,44 @@ pipeline {
             }
         }
 
-        stage('Run Selenium Tests') {
+        stage('Run Tests') {
             steps {
                 bat '''
-                python -m pytest Del_2-Inloggningsfunktion/test_inloggningsfunktion_Selenium.py
+                if not exist %REPORT_DIR% mkdir %REPORT_DIR%
+
+                python -m pytest ^
+                  --html=%REPORT_DIR%\\report.html ^
+                  --self-contained-html ^
+                  Del_2-Inloggningsfunktion ^
+                  Del_3-Integrationstester
                 '''
             }
         }
 
-        stage('Run Playwright Tests') {
+        stage('Generate PDF Report') {
             steps {
                 bat '''
-                python -m pytest Del_2-Inloggningsfunktion/test_inloggningsfunktion_playwright.py
-                '''
-            }
-        }
-
-        stage('Run Integration Tests') {
-            steps {
-                bat '''
-                python -m pytest Del_3-Integrationstester/test_integrationstester.py
+                wkhtmltopdf ^
+                  %REPORT_DIR%\\report.html ^
+                  %REPORT_DIR%\\test-report.pdf
                 '''
             }
         }
     }
 
     post {
-        success {
-            echo 'CI PIPELINE SUCCESS: All tests passed'
-        }
-        failure {
-            echo 'CI PIPELINE FAILURE: One or more tests failed'
-        }
         always {
-            echo 'CI run completed'
+            archiveArtifacts artifacts: 'reports/*.pdf', fingerprint: true
+            archiveArtifacts artifacts: 'reports/*.html', fingerprint: true
+            echo 'Reports archived'
+        }
+
+        success {
+            echo 'CI PIPELINE SUCCESS'
+        }
+
+        failure {
+            echo 'CI PIPELINE FAILURE'
         }
     }
 }
