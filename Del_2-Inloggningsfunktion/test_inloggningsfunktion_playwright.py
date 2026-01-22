@@ -40,7 +40,6 @@ def page() -> Page:
 def login(page: Page, username: str, password: str):
     """
     Hjälpfunktion för inloggning.
-
     """
     page.fill("#user-name", username)
     page.fill("#password", password)
