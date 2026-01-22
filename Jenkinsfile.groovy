@@ -32,9 +32,15 @@ pipeline {
             steps {
                 bat '''
                 python -m pip install --upgrade pip
-                python -m pip install selenium pytest playwright pytest-playwright
+                python -m pip install \
+                    selenium \
+                    pytest \
+                    pytest-cov \
+                    playwright \
+                    pytest-playwright \
+                    requests
+
                 python -m playwright install
-                pip install pytest pytest-cov requests
                 '''
             }
         }
@@ -58,7 +64,7 @@ pipeline {
         stage('Run Integration Tests') {
             steps {
                 bat '''
-                python -m pytest Del_3-Inloggningsfunktion/test_integrationstester.py
+                python -m pytest Del_3-Integrationstester/Integrationstester.py
                 '''
             }
         }
