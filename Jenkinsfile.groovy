@@ -88,8 +88,12 @@ pipeline {
     post {
         always {
             echo '=== Archiving reports ==='
-            archiveArtifacts artifacts: 'reports/*.html', fingerprint: true
-            archiveArtifacts artifacts: 'reports/*.pdf', fingerprint: true
+        archiveArtifacts artifacts: 'reports/*.html',
+                         fingerprint: true
+
+        archiveArtifacts artifacts: 'reports/*.pdf',
+                         fingerprint: true,
+                         allowEmptyArchive: true
         }
 
         success {
