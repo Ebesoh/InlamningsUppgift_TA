@@ -105,4 +105,5 @@ pipeline {
             echo 'CI PIPELINE FAILURE: One or more tests failed'
         }
     }
+
 }
