@@ -11,7 +11,6 @@ pipeline {
         PLAYWRIGHT_HEADLESS = '1'
         REPORT_DIR = 'reports'
     }
-
     stages {
 
         stage('Checkout') {
