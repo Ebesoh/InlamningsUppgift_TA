@@ -64,7 +64,7 @@ pipeline {
         stage('Run Integration Tests') {
             steps {
                 bat '''
-                python -m pytest Del_3-Integrationstester/Integrationstester.py
+                python -m pytest Del_3-Integrationstester/test_integrationstester.py
                 '''
             }
         }
