@@ -15,7 +15,6 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Checking out source code'
                 checkout scm
             }
         }
@@ -23,8 +22,8 @@ pipeline {
         stage('Verify Environment') {
             steps {
                 bat '''
+                where python
                 python --version
-                pip --version
                 '''
             }
         }
@@ -32,8 +31,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 bat '''
-                pip install --upgrade pip
-                pip install selenium pytest playwright pytest-playwright
+                python -m pip install --upgrade pip
+                python -m pip install selenium pytest playwright pytest-playwright
                 python -m playwright install
                 '''
             }
@@ -42,7 +41,7 @@ pipeline {
         stage('Run Selenium Tests') {
             steps {
                 bat '''
-                pytest Del_2-Inloggningsfunktion/test_inloggningsfunktion_Selenium.py
+                python -m pytest Del_2-Inloggningsfunktion/test_inloggningsfunktion_Selenium.py
                 '''
             }
         }
@@ -50,7 +49,7 @@ pipeline {
         stage('Run Playwright Tests') {
             steps {
                 bat '''
-                pytest Del_2-Inloggningsfunktion/test_inloggningsfunktion_playwright.py
+                python -m pytest Del_2-Inloggningsfunktion/test_inloggningsfunktion_playwright.py
                 '''
             }
         }
@@ -62,9 +61,6 @@ pipeline {
         }
         failure {
             echo 'CI PIPELINE FAILURE: One or more tests failed'
-        }
-        always {
-            echo 'CI run completed'
         }
     }
 }
