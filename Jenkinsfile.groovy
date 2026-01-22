@@ -53,6 +53,14 @@ pipeline {
                 '''
             }
         }
+
+        stage('Run Integration Tests') {
+            steps {
+                bat '''
+                python -m pytest test_integrationstester.py
+                '''
+            }
+        }
     }
 
     post {
@@ -61,6 +69,9 @@ pipeline {
         }
         failure {
             echo 'CI PIPELINE FAILURE: One or more tests failed'
+        }
+        always {
+            echo 'CI run completed'
         }
     }
 }
