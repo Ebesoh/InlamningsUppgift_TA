@@ -46,7 +46,7 @@ def login(page: Page, username: str, password: str):
     page.click("#login-button")
 
 
-# ---------- Positiva fall -------------
+# ---------- Positiva fall ----------------
 
 @pytest.mark.parametrize(
     "username",
