@@ -3,12 +3,12 @@ pipeline {
 
     options {
         timestamps()
-        ansiColor('xterm')
     }
 
     environment {
         PYTHONUNBUFFERED = '1'
         PLAYWRIGHT_BROWSERS_PATH = '0'
+        PLAYWRIGHT_HEADLESS = '1'
     }
 
     stages {
@@ -47,10 +47,7 @@ pipeline {
             }
         }
 
-        stage('Run Playwright Tests (Headless)') {
-            environment {
-                PLAYWRIGHT_HEADLESS = '1'
-            }
+        stage('Run Playwright Tests') {
             steps {
                 bat '''
                 pytest Del_2-Inloggningsfunktion/test_inloggningsfunktion_playwright.py
@@ -70,4 +67,6 @@ pipeline {
             echo 'CI run completed'
         }
     }
+}
+
 }
