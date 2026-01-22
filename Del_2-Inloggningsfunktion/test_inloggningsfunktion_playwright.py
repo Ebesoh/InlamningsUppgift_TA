@@ -35,7 +35,6 @@ def page() -> Page:
         page.goto(URL)
 
         yield page
-
         browser.close()
 
 def login(page: Page, username: str, password: str):
