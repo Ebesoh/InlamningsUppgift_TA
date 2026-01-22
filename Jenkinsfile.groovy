@@ -11,6 +11,7 @@ pipeline {
         PLAYWRIGHT_HEADLESS = '1'
         REPORT_DIR = 'reports'
     }
+
     stages {
 
         stage('Checkout') {
@@ -86,7 +87,7 @@ pipeline {
 
     post {
         always {
-            echo === Archiving reports ===
+            echo '=== Archiving reports ==='
             archiveArtifacts artifacts: 'reports/*.html', fingerprint: true
             archiveArtifacts artifacts: 'reports/*.pdf', fingerprint: true
         }
