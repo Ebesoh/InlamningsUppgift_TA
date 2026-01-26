@@ -54,7 +54,7 @@ def test_product_field_types(): # Testfall kontrollera att fälten i en product 
     response = requests.get(f"{BASE_URL}/products")
     product = response.json()[0]
 
-    assert isinstance(product["id1"], int)
+    assert isinstance(product["id"], int)
     assert isinstance(product["title"], str)
     assert isinstance(product["price"], (int, float))
     assert isinstance(product["description"], str)
