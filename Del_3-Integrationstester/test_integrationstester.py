@@ -50,7 +50,7 @@ def test_specific_product_contains_required_fields(): #Testfall: Kontrollera att
     assert "image" in product
 
 
-def test_product_field_types(): # Testfall kontrollera att fälten i en product har rätt datatyper
+def test_product_field_types(: # Testfall kontrollera att fälten i en product har rätt datatyper
     response = requests.get(f"{BASE_URL}/products")
     product = response.json()[0]
 
