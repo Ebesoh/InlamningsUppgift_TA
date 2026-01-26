@@ -67,7 +67,7 @@ pipeline {
             }
         }
 
-        stage('Generate PDF Report (optional)') {
+        stage('Generate PDF Report (optional) ') {
             steps {
                 bat '''
                 echo === Attempting PDF generation ===
