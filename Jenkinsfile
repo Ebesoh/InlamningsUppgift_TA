@@ -88,7 +88,7 @@ pipeline {
 
     post {
         always {
-            echo '=== Archiving reports ==='
+            echo '=== Archiving reports === '
         archiveArtifacts artifacts: 'reports/*.html',
                          fingerprint: true
 
