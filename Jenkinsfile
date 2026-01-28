@@ -1,5 +1,5 @@
 // Denna pipeline automatiserar webbtestning med Python, Selenium, Playwright och Pytest
-// och genererar en detaljerad HTML-rapport som kan arkiveras i Jenkins
+// och genererar en tydlig, detaljerad HTML-rapport med testnamn, status och loggar
 pipeline {
     agent any // Körs på alla tillgängliga Jenkins-agenter/exekutorer
 
@@ -8,9 +8,9 @@ pipeline {
     }
 
     environment {
-        PYTHONUNBUFFERED = '1'            // Tvingar Python att skriva ut output direkt (ingen buffring)
-        PLAYWRIGHT_BROWSERS_PATH = '0'    // Använder Playwrights standardplats för webbläsare
-        PLAYWRIGHT_HEADLESS = '1'         // Kör webbläsare i headless-läge (krav i CI)
+        PYTHONUNBUFFERED = '1'            // Omedelbar Python-output (ingen buffring)
+        PLAYWRIGHT_BROWSERS_PATH = '0'    // Standardplats för Playwright-webbläsare
+        PLAYWRIGHT_HEADLESS = '1'         // Headless-läge (krävs i CI)
         REPORT_DIR = 'reports'             // Katalog för HTML-testrapporter
     }
 
@@ -36,7 +36,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 bat '''
-                REM Installerar och uppdaterar Python-beroenden
                 echo === Installing Python dependencies ===
                 python -m pip install --upgrade pip
 
@@ -50,29 +49,31 @@ pipeline {
                     pytest-playwright ^
                     requests
 
-                REM Laddar ner Playwright-webbläsare (Chromium, Firefox, WebKit)
+                REM Laddar ner Playwright-webbläsare
                 echo === Installing Playwright browsers ===
                 python -m playwright install
                 '''
             }
         }
 
-        stage('Run Tests & Generate HTML Report') {
+        stage('Run Tests & Generate Detailed HTML Report') {
             steps {
                 bat '''
                 echo === Running tests ===
 
-                REM Skapar rapportkatalog om den inte redan finns
+                REM Skapar rapportkatalog om den inte finns
                 if not exist %REPORT_DIR% mkdir %REPORT_DIR%
 
-                REM Kör tester med extra detaljnivå:
-                REM -v              : Visar varje test och dess resultat i konsolen
-                REM --durations=10  : Visar de långsammaste testerna (bra för CI-analys)
-                REM HTML-rapporten är självständig och enkel att dela
+                REM Testkörning med hög synlighet:
+                REM -v                   : Visar varje test i Jenkins-loggen
+                REM --durations=10       : Visar långsamma tester
+                REM --capture=tee-sys    : Loggar per test inkluderas i HTML-rapporten
+                REM HTML-rapporten innehåller testnamn, status och detaljer
 
                 python -m pytest ^
                     -v ^
                     --durations=10 ^
+                    --capture=tee-sys ^
                     --html=%REPORT_DIR%\\report.html ^
                     --self-contained-html ^
                     Del_2-Inloggningsfunktion ^
@@ -84,7 +85,7 @@ pipeline {
 
     post {
         always {
-            echo '=== Archiving reports ==='
+            echo '=== Archiving HTML report ==='
             archiveArtifacts artifacts: 'reports/*.html',
                              fingerprint: true
         }
