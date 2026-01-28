@@ -1,4 +1,5 @@
-// Denna pipeline automatiserar webbtestning med Python, Selenium, Playwright och Pytest med HTML-rapportering
+// Denna pipeline automatiserar webbtestning med Python, Selenium, Playwright och Pytest
+// och genererar en detaljerad HTML-rapport som kan arkiveras i Jenkins
 pipeline {
     agent any // Körs på alla tillgängliga Jenkins-agenter/exekutorer
 
@@ -7,10 +8,10 @@ pipeline {
     }
 
     environment {
-        PYTHONUNBUFFERED = '1'            // Tvingar Python att skriva ut output omedelbart (ingen buffring)
-        PLAYWRIGHT_BROWSERS_PATH = '0'    // Lagrar Playwright-webbläsare på standardplatsen
-        PLAYWRIGHT_HEADLESS = '1'         // Kör webbläsare i headless-läge (utan grafiskt gränssnitt)
-        REPORT_DIR = 'reports'             // Mappnamn för att lagra testrapporter
+        PYTHONUNBUFFERED = '1'            // Tvingar Python att skriva ut output direkt (ingen buffring)
+        PLAYWRIGHT_BROWSERS_PATH = '0'    // Använder Playwrights standardplats för webbläsare
+        PLAYWRIGHT_HEADLESS = '1'         // Kör webbläsare i headless-läge (krav i CI)
+        REPORT_DIR = 'reports'             // Katalog för HTML-testrapporter
     }
 
     stages {
@@ -24,7 +25,7 @@ pipeline {
         stage('Verify Environment') {
             steps {
                 bat '''
-                REM Felsökning – bekräftar korrekt Python-miljö innan tester körs
+                REM Bekräftar att rätt Python-miljö används innan tester körs
                 echo === Python detection ===
                 where python
                 python --version
@@ -35,7 +36,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 bat '''
-                REM Installerar Python-beroenden
+                REM Installerar och uppdaterar Python-beroenden
                 echo === Installing Python dependencies ===
                 python -m pip install --upgrade pip
 
@@ -49,7 +50,7 @@ pipeline {
                     pytest-playwright ^
                     requests
 
-                REM Installerar Playwright-webbläsare
+                REM Laddar ner Playwright-webbläsare (Chromium, Firefox, WebKit)
                 echo === Installing Playwright browsers ===
                 python -m playwright install
                 '''
@@ -61,13 +62,17 @@ pipeline {
                 bat '''
                 echo === Running tests ===
 
-                REM Skapar rapportkatalog om den inte finns
+                REM Skapar rapportkatalog om den inte redan finns
                 if not exist %REPORT_DIR% mkdir %REPORT_DIR%
 
-                REM Kör pytest och genererar HTML-rapport
-                REM --self-contained-html inkluderar CSS/JS i samma fil
+                REM Kör tester med extra detaljnivå:
+                REM -v              : Visar varje test och dess resultat i konsolen
+                REM --durations=10  : Visar de långsammaste testerna (bra för CI-analys)
+                REM HTML-rapporten är självständig och enkel att dela
 
                 python -m pytest ^
+                    -v ^
+                    --durations=10 ^
                     --html=%REPORT_DIR%\\report.html ^
                     --self-contained-html ^
                     Del_2-Inloggningsfunktion ^
