@@ -62,7 +62,7 @@ def login(page: Page, username: str, password: str):
 def test_anvandare_kan_logga_in_med_korrekta_uppgifter(page: Page, username):
 
     """ Testfall verifiera att giltiga användare kan logga in """
-    login(page, username, "secret_sauce")
+    login(page, username, "secret_sauc")
     assert "inventory" in page.url
 
 
