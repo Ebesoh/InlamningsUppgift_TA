@@ -39,14 +39,15 @@ pipeline {
                 echo === Installing Python dependencies ===
                 python -m pip install --upgrade pip
 
+                REM Installerar test- och automationsbibliotek
                 python -m pip install ^
-                    selenium ^          REM Webautomation (traditionell)
-                    pytest ^            REM Testramverk
-                    pytest-cov ^        REM Kodtäckningsrapportering
-                    pytest-html ^       REM HTML-testrapporter
-                    playwright ^        REM Modern webautomation
-                    pytest-playwright ^ REM Playwright-integration med pytest
-                    requests            REM HTTP-bibliotek för REST API-testning
+                    selenium ^
+                    pytest ^
+                    pytest-cov ^
+                    pytest-html ^
+                    playwright ^
+                    pytest-playwright ^
+                    requests
 
                 REM Installerar Playwright-webbläsare
                 echo === Installing Playwright browsers ===
@@ -63,11 +64,14 @@ pipeline {
                 REM Skapar rapportkatalog om den inte finns
                 if not exist %REPORT_DIR% mkdir %REPORT_DIR%
 
+                REM Kör pytest och genererar HTML-rapport
+                REM --self-contained-html inkluderar CSS/JS i samma fil
+
                 python -m pytest ^
-                    --html=%REPORT_DIR%\\report.html ^   REM Genererar HTML-rapport
-                    --self-contained-html ^              REM Inkluderar CSS/JS i en enda fil (portabel)
-                    Del_2-Inloggningsfunktion ^           REM Kör tester från mappen "Del_2-Inloggningsfunktion"
-                    Del_3-Integrationstester              REM Kör tester från mappen "Del_3-Integrationstester"
+                    --html=%REPORT_DIR%\\report.html ^
+                    --self-contained-html ^
+                    Del_2-Inloggningsfunktion ^
+                    Del_3-Integrationstester
                 '''
             }
         }
