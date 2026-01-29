@@ -10,7 +10,7 @@ Utöver kraven för G ska du även:
 ● Utöka integrationstesterna så att de validerar fler detaljer i API-svaren, till exempel:
 ○ Antalet produkter som returneras matchar det förväntade antalet.
 ○ En specifik produkt innehåller korrekta fält som title, price och category.
-○ Ett specifikt produkt-ID returnerar rätt data."""
+○ Ett specifikt produkt-ID returnerar rätt data.."""
 
 import requests # Används för att skicka HTTP-förfrågningar till API:et
 
